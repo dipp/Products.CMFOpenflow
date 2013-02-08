@@ -1,10 +1,12 @@
+#Translation of reflow.pot to German
 msgid ""
 msgstr ""
 "Project-Id-Version: reflow-en\n"
 "POT-Creation-Date: 2003-07-16 10:07+CET\n"
-"PO-Revision-Date: 2003-07-16 12:13+0200\n"
-"Last-Translator: Riccardo Lemmi <riccardo@reflab.it>\n"
+"PO-Revision-Date: 2013-02-08 14:11+0100\n"
+"Last-Translator: Peter Reimer <reimer@hbz-nrw.de>\n"
 "Language-Team: it <staff@reflab.it>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,25 +15,25 @@ msgstr ""
 "Domain: reflow\n"
 
 msgid "Actions"
-msgstr "Actions"
+msgstr "Aktionen"
 
 msgid "Activate"
-msgstr "Activate"
+msgstr "aktivieren"
 
 msgid "Activity"
-msgstr "Activity"
+msgstr "Aktivität"
 
 msgid "Assign"
-msgstr "Assign"
+msgstr "zuweisen"
 
 msgid "Call Application"
 msgstr "Call Application"
 
 msgid "Complete"
-msgstr "Complete"
+msgstr "vollständig"
 
 msgid "Description"
-msgstr "Description"
+msgstr "Beschreibung"
 
 msgid "End Fallin"
 msgstr "End Fallin"
@@ -43,13 +45,13 @@ msgid "Fallout"
 msgstr "Fall Out"
 
 msgid "Inactive"
-msgstr "Make Inactive"
+msgstr "Inaktiv"
 
 msgid "Instance"
-msgstr "Instance"
+msgstr "Instanz"
 
 msgid "Process"
-msgstr "Process"
+msgstr "Prozess"
 
 msgid "Self Assign"
 msgstr "Self Assign"
