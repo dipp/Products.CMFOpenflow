@@ -1,0 +1,119 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+<h1>Work list</h1>
+
+<p>
+This page represents the to-do list of a given actor (the currently logged zope user).
+The to-do list is the collection of all instances the actor can work on, ordered by activity the instance is pending on.
+Clicking on an instance will start its activity application.
+</p>
+
+<h2><img src="misc_/OFSP/UserFolder_icon.gif"> Logged user:</h2>
+<table border="2" cellpadding="5">
+  <tr>
+    <th bgcolor="#dfdfdf">
+ name
+    </th>
+    <td>
+ <big tal:content="python:request.AUTHENTICATED_USER.getUserName()">User Name</big>
+    </td>
+  </tr>
+  <tr>
+    <th bgcolor="#dfdfdf">
+        roles
+    </th>
+    <td>
+      <tal:block repeat="ruolo python:request.AUTHENTICATED_USER.getRolesInContext(here)">
+        <span tal:replace="ruolo">Roles set</span><br>
+ <span tal:replace="nothing">
+ </span>
+      </tal:block>
+    </td>
+  </tr>
+</table>
+
+
+
+<hr>
+
+<tal:block repeat="process_b python:container.Catalog.searchResults(meta_type='Process')">
+  <tal:block define="process python:process_b.getObject()">
+  <h2>Process: <tal:block replace="process/id">process name</tal:block></h2>
+
+  <tal:block repeat="activity python:getattr(container,process.id).objectValues('Activity')">
+    <strong>Activity: <tal:block replace="activity/id">activity name</tal:block></strong>
+
+    <table border="1">
+      <tr>
+         <th bgcolor="#dfdfdf" width="150">Application</th>
+         <td width="500" tal:content="python:activity.application">Application name</td>
+      </tr>
+      <tr>
+         <th bgcolor="#dfdfdf">Inactive workitems</th>
+         <td>
+           <ul tal:repeat="workitem_b python:container.Catalog.searchResults(meta_type='Workitem',process_id=process.id,activity_id=activity.id,status='inactive')">
+           <tal:block define="workitem python:workitem_b.getObject();
+                              instance_id python:workitem.aq_parent.id;
+                              blocked python:workitem.blocked">
+              <li>
+                 (<tal:block replace="instance_id">instance_id</tal:block>)
+                 [workitem: <tal:block replace="workitem/id">#</tal:block>,
+                  priority: <tal:block replace="python:workitem.priority">0</tal:block>]
+                 <ul>
+                   <li tal:condition="workitem/blocked">
+                         Blocked, waiting <tal:block replace="workitem/blocked">#</tal:block> arrival/s
+                   </li>
+                   <li>
+                     <tal:block define="action python:container.getUserActionsOnWorkitem(workitem.instance_id,workitem.id,request)"
+                           condition="python:action">
+                       Actions:
+                       <tal:block repeat="action_name python:action.keys()">
+                         <a href=""
+                           tal:attributes="href python:action[action_name]"
+                           tal:content="action_name">action</a><tal:block condition="not:repeat/action_name/end">,</tal:block>
+                       </tal:block>
+                     </tal:block>
+                   </li>
+                 </ul>
+              </li>
+           </tal:block>
+           </ul>
+         </td>
+      </tr>
+      <tr>
+         <th bgcolor="#dfdfdf">Active workitems</th>
+         <td>
+           <ul tal:repeat="workitem_b python:container.Catalog.searchResults(meta_type='Workitem',process_id=process.id,activity_id=activity.id,status='active')">
+           <tal:block define="workitem python:workitem_b.getObject();
+                              instance_id python:workitem.aq_parent.id;">
+              <li>
+                 (<tal:block replace="instance_id">instance_id</tal:block>)
+                 [workitem: <tal:block replace="workitem/id">#</tal:block>,
+                  priority: <tal:block replace="python:workitem.priority">0</tal:block>]
+                 <ul>
+                   <li>Actions:
+                     <tal:block define="action python:container.getUserActionsOnWorkitem(workitem.instance_id,workitem.id,request)"
+                           condition="python:action">
+                       <tal:block repeat="action_name python:action.keys()">
+                         <a href=""
+                           tal:attributes="href python:action[action_name]"
+                           tal:content="action_name">action</a><tal:block condition="not:repeat/action_name/end">,</tal:block>
+                       </tal:block>
+                     </tal:block>
+                   </li>
+                 </ul>
+              </li>
+           </tal:block>
+           </ul>
+         </td>
+      </tr>
+
+    </table>
+
+  </tal:block>
+  </tal:block>
+</tal:block>
+
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>

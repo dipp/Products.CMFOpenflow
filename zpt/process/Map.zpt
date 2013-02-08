@@ -1,0 +1,188 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+<table width="100%">
+  <tr>
+    <td align="right">
+      <form action="." method="post">
+        <input type="submit" name="manage_addActivityForm:method" value="Add Activity">
+        <input type="submit" name="manage_addTransitionForm:method" value="Add Transition">
+      </form>
+    </td>
+  </tr>
+</table>
+
+<h2>Activities</h2>
+
+<div tal:define="activity python:here.objectValues('Activity');
+        start request/start|python:0;
+        batch python:modules['ZTUtils'].Batch(activity, size=15, start=start);
+        previous python:batch.previous;
+        next python:batch.next">
+
+  <p tal:condition="python:previous or next">Activities
+    <span tal:replace="batch/start">1</span> to
+    <span tal:replace="batch/end">10</span>of
+    <span tal:replace="python:len(activity)">17</span>.
+    <br>
+    <a tal:condition="previous"
+       tal:attributes="href string:${request/URL0}?start:int=${previous/first}&amp"
+       href="previous_url">&lt; previous <span
+       tal:replace="previous/length">10</span></a>
+    <a tal:condition="next"
+       tal:attributes="href string:${request/URL0}?start:int=${next/first}&amp"
+       href="next_url">next <span
+       tal:replace="next/length">10</span> &gt;</a>
+  </p>
+
+<form action="." method="post">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" tal:condition="activity">
+    <tr bgcolor="#CCCCCC">
+      <th align="left">Activity</th>
+      <th>Kind</th>
+        <th>Join</th>
+        <th>Split</th>
+        <th>Application name</th>
+        <th>Push mode</th>
+        <th>Start mode</th>
+        <th>Finish mode</th>
+        <th>Subflow process</th>
+    </tr>
+    <tr valign="top" bgcolor="#eeeeee" tal:repeat="activity batch"
+        tal:attributes="bgcolor python:test(path('repeat/activity/even'), '#ffffff', '#eeeeee')">
+      <td>
+        <input type="checkbox"
+               name="ids:list"
+               value="myact"
+               tal:attributes="value activity/id">
+        <a href="activity"
+           tal:attributes="href string:${activity/id}"
+           tal:content="activity/id">
+           Activity/id
+        </a>
+      </td>
+      <td align="center">
+        <span tal:replace="activity/kind">kind</span>
+      </td>
+      <td align="center">
+        <span tal:replace="activity/join_mode">join mode</span>
+      </td>
+      <td align="center">
+        <span tal:replace="activity/split_mode">split mode</span>
+      </td>
+      <tal:block condition="python:activity.kind=='standard'">
+
+        <td align="center">
+          <span tal:replace="python:(activity.application!='\'\'' and activity.application) or ' '">application</span>
+        </td>
+        <td align="center">
+          <span tal:condition="activity/auto_push_mode" tal:omit-tag="" >Automatic</span>
+          <span tal:condition="not:activity/auto_push_mode" tal:omit-tag="" >Manual</span>
+        </td>
+        <td align="center">
+          <span tal:condition="activity/start_mode" tal:omit-tag="" >Automatic</span>
+          <span tal:condition="not:activity/start_mode" tal:omit-tag="" >Manual</span>
+        </td>
+        <td align="center">
+          <span tal:condition="activity/finish_mode" tal:omit-tag="" >Automatic</span>
+          <span tal:condition="not:activity/finish_mode" tal:omit-tag="" >Manual</span>
+        </td>
+      </tal:block>
+
+      <tal:block condition="python:activity.kind!='standard'">
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tal:block>
+      <tal:block condition="python:activity.kind=='subflow'">
+        <td align="center">
+          <span tal:content="activity/subflow" tal:omit-tag=""></span>
+        </td>
+      </tal:block>
+      <tal:block condition="python:activity.kind!='subflow'">
+        <td>&nbsp;</td>
+      </tal:block>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <input type="submit" name="manage_delObjects:method" value="Delete activity">
+      </td>
+    </tr>
+    
+
+  </table>
+
+  <p tal:condition="not:activity"><b>There are no activities yet.</b></p>
+</form>
+</div>
+
+<h2>Transitions</h2>
+
+<div tal:define="transition python:here.objectValues('Transition');
+        start request/start|python:0;
+        batch python:modules['ZTUtils'].Batch(transition, size=15, start=start);
+        previous python:batch.previous;
+        next python:batch.next">
+
+  <p tal:condition="python:previous or next">Transitions 
+    <span tal:replace="batch/start">1</span> to 
+    <span tal:replace="batch/end">10</span> of 
+    <span tal:replace="python:len(transition)">17</span>.
+    <br>
+    <a tal:condition="previous"
+       tal:attributes="href string:${request/URL0}?start:int=${previous/first}&amp"
+       href="previous_url">&lt; previous <span
+       tal:replace="previous/length">10</span></a>
+    <a tal:condition="next"
+       tal:attributes="href string:${request/URL0}?start:int=${next/first}&amp"
+       href="next_url">next <span
+       tal:replace="next/length">10</span> &gt;</a>
+  </p>
+
+
+  <form action="." method="post">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%" tal:condition="transition">
+    <tr bgcolor="#CCCCCC">
+      <th align="left">Transition</th>
+      <th>Condition</th>
+      <th>From</th>
+      <th>To</th>
+    </tr>
+
+    <tr valign="top" bgcolor="#eeeeee" tal:repeat="transition batch"
+          tal:attributes="bgcolor python:test(path('repeat/transition/even'), '#ffffff', '#eeeeee')">
+      <td>
+        <input type="checkbox"
+               name="ids:list"
+               value=""
+               tal:attributes="value transition/id">
+        <a href="transition"
+           tal:attributes="href  string:${transition/id}/manage_editTransitionForm"
+           tal:content="transition/id">
+           Transition/id
+        </a>
+      </td>
+      <td align="center">
+        <span tal:condition="python:transition.condition" tal:replace="transition/condition">Condition</span>
+        <span tal:condition="not:transition/condition">- no condition -</span>
+      </td>
+      <td align="center">
+        <span tal:replace="transition/From">From</span>
+      </td>
+        <td align="center">
+        <span tal:replace="transition/To">to</span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <input type="submit" name="manage_delObjects:method" value="Delete transition">
+      </td>
+    </tr>
+  </table>
+  <p tal:condition="not:transition"><b>There are no transitions yet.</b></p>
+
+  </form>
+</div>
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>

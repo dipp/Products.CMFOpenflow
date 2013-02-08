@@ -1,0 +1,55 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="Reflow">
+  <metal:block fill-slot="base">
+      <base href=""
+            tal:attributes="href python: here.absolute_url() + '/'">
+  </metal:block>
+<body>
+
+<div metal:fill-slot="header"
+     i18n:translate="header_push">
+  Push Workitem
+</div>
+
+<div metal:fill-slot="main" class="desktop">
+
+<table border="1">
+  <tr>
+    <th bgcolor="#cccccc" i18n:translate="Instance">Instance</th>
+    <td><b tal:replace="request/instance_id">instance id</b></td>
+  </tr>
+  <tr>
+    <th bgcolor="#cccccc" i18n:translate="Workitem">Workitem</th>
+    <td><b tal:replace="request/workitem_id">workitem id</b></td>
+  </tr>
+  <tr>
+    <th bgcolor="#cccccc" i18n:translate="Activity">Activity</th>
+    <td><b tal:replace="request/activity_id">activity id</b></td>
+  </tr>
+  <tr>
+    <th bgcolor="#cccccc" i18n:translate="Process">Process</th>
+    <td><b tal:replace="request/process_id">process id</b></td>
+  </tr>
+</table>
+
+
+<form action="portal_openflow/assignWorkitem" method="post">
+
+<div i18n:translate="description_choose">Choose an user to assign this workitem to</div>
+
+<input type="hidden" name="instance_id" value="" tal:attributes="value request/instance_id">
+<input type="hidden" name="workitem_id" value="" tal:attributes="value request/workitem_id">
+<select name="actor">
+  <tal:block tal:repeat="userAssign python:container.portal_openflow.usersAssignableTo(process_id=request.process_id, activity_id=request.activity_id)">
+    <option value="" tal:attributes="value userAssign" tal:content="userAssign">User</option>
+  </tal:block>
+</select>
+
+<input type="submit" value="Assign" i18n:attributes="value">
+</form>
+
+</div>
+</body>
+</html>

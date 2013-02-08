@@ -1,0 +1,36 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+<table border="1">
+  <tr>
+    <th bgcolor="#cccccc">instance</th><td><b tal:replace="request/instance_id">instance id</b></td>
+  </tr>
+  <tr>
+    <th bgcolor="#cccccc">workitem</th><td><b tal:replace="request/workitem_id">workitem id</b></td>
+  </tr>
+  <tr>
+    <th bgcolor="#cccccc">activity</th><td><b tal:replace="request/activity_id">activity id</b></td>
+  </tr>
+  <tr>
+    <th bgcolor="#cccccc">process</th><td><b tal:replace="request/process_id">process id</b></td>
+  </tr>
+</table>
+
+
+<form action="assignWorkitem" method="post">
+
+Choose an user to assign this workitem to:<br>
+
+<input type="hidden" name="instance_id" value="" tal:attributes="value request/instance_id">
+<input type="hidden" name="workitem_id" value="" tal:attributes="value request/workitem_id">
+<select name="actor">
+  <tal:block tal:repeat="userAssign python:container.usersAssignableTo(process_id=request.process_id, activity_id=request.activity_id)">
+    <option value="" tal:attributes="value userAssign" tal:content="userAssign">User</option>
+  </tal:block>
+</select>
+
+<input type="submit" value="Assign">
+</form>
+
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>

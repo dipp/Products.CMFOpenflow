@@ -1,0 +1,117 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="Reflow" >
+  <metal:block fill-slot="base">
+    <tal:block tal:define="dummy python:request.set('disable_border', 1)"
+               tal:replace="nothing">
+      Disable the tabs
+      <base href=""
+            tal:attributes="href python: here.absolute_url() + '/'">
+    </tal:block>
+  </metal:block>
+
+<body>
+
+  <div metal:fill-slot="header">
+
+    <tal:block define="global openflow python: container.portal_openflow" />
+    <tal:block define="global UserName python:user.getUserName()" />
+
+    <h1 i18n:translate="myworklist">My Worklist</h1>
+
+  </div>
+
+<div metal:fill-slot="main" class="desktop">
+
+<!-- workitems assigned to user-->
+
+<h2>
+  <span i18n:translate="assigned_workitems">Workitems assigned to user</span>
+  <i tal:content="UserName">User Name</i>
+</h2>
+
+<div tal:define="workitems python:openflow.Catalog(meta_type='Workitem',sort_on='priority', actor=UserName)">
+
+    <table cellpadding="2" cellspacing="2" border="0"
+           width="100%" class="listing" tal:condition="workitems">
+
+      <tr valign="top" align="left" bgcolor="#cccccc" class="headings">
+        <th i18n:translate="Description">Description</th>
+        <th i18n:translate="Activity">Activity(Process)</th>
+        <th>!</th>
+        <th i18n:translate="Status">Status</th>
+        <th i18n:translate="Actions">Actions</th>
+      </tr>
+
+      <div tal:repeat="workitem workitems">
+        <tal:block define="wi workitem/getObject;
+                           action python:openflow.getUserActionsOnWorkitem(wi.instance_id,wi.id,request)"
+                   condition="action">
+
+        <tr bgcolor="" tal:attributes="bgcolor python:test(path('repeat/workitem/even'), '#ffffff', '#eeeeee')">
+          <td tal:content="python: wi.title or '%s-%s'%(wi.instance_id,wi.id)">Description</td>
+          <td tal:content="string: ${wi/activity_id}(${wi/process_id})">Activity(Process)</td>
+          <td tal:content="wi/priority">1</td>
+          <td tal:content="wi/status" i18n:translate="">Status</td>
+          <td>
+            <tal:block repeat="action_name python:action.keys()">
+                <a href="" tal:attributes="href python:action[action_name]"
+                           tal:content="action_name"
+                           i18n:translate="">action</a>
+            </tal:block>
+          </td>
+        </tr>
+        </tal:block>
+
+      </div>
+
+    </table>
+<p tal:condition="not:workitems"><b>No workitems assigned yet.</b></p>
+</div>
+
+<!-- workitems for user not yet assigned -->
+
+  <h2 i18n:translate="free_workitems">Workitems not yet assigned</h2>
+  <div tal:define="workitems python:openflow.Catalog(meta_type='Workitem',sort_on='priority')">
+
+    <table cellpadding="2" cellspacing="2" border="0"
+           width="100%" class="listing" tal:condition="workitems">
+
+      <tr valign="top" align="left" bgcolor="#cccccc" class="headings">
+        <th i18n:translate="Description">Description</th>
+        <th i18n:translate="Activity">Activity(Process)</th>
+        <th>!</th>
+        <th i18n:translate="Status">Status</th>
+        <th i18n:translate="Actions">Actions</th>
+      </tr>
+
+      <div tal:repeat="workitem workitems">
+        <tal:block define="wi workitem/getObject;
+                           action python:openflow.getUserActionsOnWorkitem(wi.instance_id,wi.id,request)"
+                   condition="python:action and not workitem.actor">
+
+        <tr bgcolor="" tal:attributes="bgcolor python:test(path('repeat/workitem/even'), '#ffffff', '#eeeeee')">
+          <td tal:content="python: wi.title or '%s-%s'%(wi.instance_id,wi.id)">Description</td>
+          <td tal:content="string: ${wi/activity_id}(${wi/process_id})">Activity(Process)</td>
+          <td tal:content="wi/priority">1</td>
+          <td tal:content="wi/status" i18n:translate="">Status</td>
+          <td>
+            <tal:block repeat="action_name python:action.keys()">
+                <a href="" tal:attributes="href python:action[action_name]"
+                           tal:content="action_name"
+                           i18n:translate="">action</a>
+            </tal:block>
+          </td>
+        </tr>
+        </tal:block>
+
+      </div>
+
+    </table>
+<p tal:condition="not:workitems"><b>No workitems assignable to user.</b></p>
+</div>
+
+</div>
+</body>
+</html>

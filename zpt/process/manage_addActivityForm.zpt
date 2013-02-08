@@ -1,0 +1,146 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+<form action="addActivity" method="post">
+
+<table border="0">
+<tr>
+
+  <th>Activity id</th>
+
+  <td align="right">
+    <input type="text" name="id" value="myact"><br>
+  </td>
+
+</tr>
+
+<tr>
+  <th>
+    General settings
+  </th>
+  <td align="right">
+    Title: <input type="text" name="title" value=""><br>
+    Description: <input type="text" name="description" value=""><br>
+    Limit: <input type="text" name="limit" value="0"><br>
+  </td>
+</tr>
+</table>
+
+<table border="1">
+<tr>
+  <th>
+    Activity Kind:
+  </th>
+  <td align="right">
+  </td>
+</tr>
+
+<tr>
+  <th>
+    <input type="radio" name="kind:string" value="dummy">
+    Dummy
+  </th>
+  <td align="right">Routing activity
+  </td>
+</tr>
+
+<tr>
+
+  <th>
+    <input type="radio" name="kind:string" value="standard" checked>
+    Application
+  </th>
+  <td align="right">
+  Name:  
+    <select name="application">
+      <option value=""></option>
+      <tal:block repeat="applications container/listApplications">
+      <option value=""
+              tal:content="applications/name"
+              tal:attributes="value applications/name">Application Name</option>
+      </tal:block>
+    </select>
+  <p>
+    <table>
+      <tr>
+        <td>
+	  <input type="checkbox" name="push_mode:int" value="1"> Automatic push
+	  pushing application:
+            <select name="push_application">
+              <option value=""></option>
+              <tal:block repeat="applications container/listApplications">
+                <option value=""
+                        tal:content="applications/name"
+                        tal:attributes="value applications/name">Application Name</option>
+             </tal:block>
+           </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+	  <input type="checkbox" name="start_mode:int" value="1"> Automatic start
+        </td>
+      </tr>
+      <tr>
+        <td>
+	  <input type="checkbox" name="finish_mode:int" value="1" checked> Automatic finish
+	 
+        </td>
+      </tr>
+    </table>
+  </td>
+  
+
+</tr>
+
+<tr>
+
+  <th>
+    <input type="radio" name="kind:string" value="subflow">
+    Subprocess
+  </th>
+  <td align="right">
+    Subflow:
+    <select name="subflow">
+      <option value =""></option>
+      <tal:block repeat="process python:here.aq_parent.objectValues('Process')">
+      <option value=""
+              tal:content="process/id"
+              tal:attributes="value process/id">Process Name</option>
+      </tal:block>
+    </select>
+  </td>
+</tr>
+</table>
+
+<table>
+<tr>
+
+  <th>Workitem handling</th>
+  <td align="right">
+  Join kind:
+  <select name="join_mode">
+    <option value="and">And</option>
+    <option value="xor">Xor</option>
+  </select><br>
+  Split kind:
+  <select name="split_mode">
+    <option value="and">And</option>
+    <option value="xor">Xor</option>
+  </select><br>
+  </td>
+
+</tr>
+</table>
+
+<table>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" name="submit" value="Add Activity">
+    </td>
+  </tr>
+</table>
+
+</form>
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>

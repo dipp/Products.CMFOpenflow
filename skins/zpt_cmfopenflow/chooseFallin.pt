@@ -1,0 +1,74 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="Reflow">
+  <metal:block fill-slot="base">
+      <base href=""
+            tal:attributes="href python: here.absolute_url() + '/'">
+  </metal:block>
+<body>
+
+<div metal:fill-slot="header" 
+     i18n:translate="header_fallin">Choose Fallin</div>
+
+<div metal:fill-slot="main" class="desktop">
+
+<tal:block define="fallin here/portal_openflow/REQUEST/form" tal:condition="python:fallin.has_key('instance_id') and fallin.has_key('workitem_id')">
+
+<p>
+  <span i18n:translate="Instance">Instance</span>: <b tal:replace="fallin/instance_id">instance id</b><br>
+  <span i18n:translate="Workitem">Workitem</span>: <b tal:replace="fallin/workitem_id">workitem id</b>
+</p>
+
+<p>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr>
+  <th bgcolor="#dfdfdf" i18n:translate="Process">
+    Process
+  </th>
+  <th bgcolor="#dfdfdf" i18n:translate="Activity">
+    Activity
+  </th>
+</tr>
+
+<tr>
+<div tal:repeat="process python:container.portal_openflow.objectValues('Process')">
+  <form action="portal_openflow/fallinWorkitem" method="post">
+    <input type="hidden" name="coming_from" value="coming from" tal:attributes="value here/REQUEST/HTTP_REFERER">
+    <input type="hidden" name="process_id" value="coming from" tal:attributes="value process/id">
+    <input type="hidden" name="instance_id" value="coming from" tal:attributes="value fallin/instance_id">
+    <input type="hidden" name="workitem_id" value="coming from" tal:attributes="value fallin/workitem_id">
+
+    <tr>
+      <td>
+        <b tal:replace="process/id">Id</b>
+      </td>
+      <td>
+        <select name="activity_id">
+          <tal:block repeat="activity python:process.objectValues('Activity')">
+            <option value="" tal:attributes="value activity/id" tal:content="activity/id">Id
+            </option>
+          </tal:block>
+        </select>
+      </td>
+      <td>
+        <input type="submit" value="Fallin" i18n:attributes="value">
+      </td>
+     </tr>
+  </form>
+</div>
+
+</table>
+
+</tal:block>
+
+<tal:block 
+    condition="not:here/portal_openflow/REQUEST/form/instance_id | here/portal_openflow/REQUEST/form/workitem_id"
+    i18n:translate="description_error_fallin">
+  You must specify both an instance id and one of its workitem ids
+</tal:block>
+
+</div>
+</body>
+</html>
+

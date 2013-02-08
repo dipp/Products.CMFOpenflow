@@ -1,0 +1,57 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+    <h2>Manage permission on activity <b tal:content="here/id">id</b></h2>
+    <p>These permissions allow access to the following methods:</p>
+    <ul>
+        <li><b>Push Permission:</b> assignWorkitem, unassignWorkitem</li>
+        <li><b>Pull Permission:</b> selfAssignWorkitem, activateWorkitem</li>
+    </ul>
+
+<tal:block define="global roles python:here.valid_roles()" />
+
+<form action="editPermissionsRoles">
+    <table>
+        <tr>
+            <th>Permissions</th>
+            <th>Roles</th>
+        </tr>
+        <tr>
+            <td></td>
+            <tal:block repeat="role roles">
+                <td tal:content="role">Roles list</td>
+            </tal:block>
+        </tr>
+
+        <tr>
+            <td>Push Roles</td>
+                <tal:block repeat="role roles" >
+                    <td tal:condition="python:role in here.getPushRoles()">
+                        <input type="checkbox" name="" checked="" tal:attributes="name string:push%$role"/>
+                    </td>
+                    <td tal:condition="not:python:role in here.getPushRoles()">
+                        <input type="checkbox" name="" tal:attributes="name string:push%$role"/>
+                    </td>
+                </tal:block>
+        </tr>
+
+        <tr>
+            <td>Pull Roles</td>
+                <tal:block repeat="role roles">
+                    <td tal:condition="python:role in here.getPullRoles()">
+                        <input type="checkbox" name="" checked="" tal:attributes="name string:pull%$role"/>
+                    </td>
+                    <td tal:condition="not:python:role in here.getPullRoles()">
+                        <input type="checkbox" name="" tal:attributes="name string:pull%$role"/>
+                    </td>
+                </tal:block>
+        </tr>
+
+        <tr>
+            <td><input type="submit" value="edit"/></td>
+        </tr>
+    </table>
+</form>
+
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>

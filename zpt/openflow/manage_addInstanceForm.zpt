@@ -1,0 +1,57 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+
+<h2>Instance creation</h2>
+
+<p>
+You can manually add instances to your openflow (and this is what you are doing now).
+In the future you probably want to have an application that adds instances using the
+<em>generateInstance(process_id)</em> method.
+</p>
+
+<form action="addInstance" method="post">
+
+    <table border="0">
+
+    <tr>
+        <th>Customer name</th>
+        <td><input type="text" name="customer" value="unnamed_customer">    </td>
+    </tr>
+
+    <tr>
+        <th>Instance title</th>
+        <td><input type="text" name="title" value=""></td>
+    </tr>
+
+    <tr>
+        <th>Comments</th>
+        <td><input type="text" name="comments" value=""></td>
+    </tr>
+
+    <tr>
+        <th>Process</th>
+        <td>
+            <select name="process_id">
+                <tal:block repeat="process python:container.objectValues('Process')">
+                <option value="" tal:attributes="value process/id">
+                    <tal:block content="process/id">Process Id</tal:block>
+                    <tal:block content="string:(${process/title})"
+                            condition="process/title | nothing">
+                        (title)
+                    </tal:block>
+                </option>
+                </tal:block>
+            </select>
+            </td>
+    </tr>
+
+    <tr>
+        <td colspan="2">
+            <input type="submit" name="submit" value="Add Instance">
+        </td>
+    </tr>
+
+    </table>
+
+</form>
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>

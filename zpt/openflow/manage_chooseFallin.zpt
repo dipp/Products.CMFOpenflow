@@ -1,0 +1,63 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+<tal:block define="fallin here/REQUEST/form" tal:condition="python:fallin.has_key('instance_id') and fallin.has_key('workitem_id')">
+
+<p>
+You can chooose a process and on of its activities: a new workitem will be created
+in the specified activity.
+The new workitem will be linked to the fallen out workitem <em tal:content="fallin/workitem_id">Workitem id</em>
+of the instance <em tal:content="fallin/instance_id">Instance id</em>.
+</p>
+
+<p>
+Instance: <b tal:replace="fallin/instance_id">instance id</b><br>
+Workitem: <b tal:replace="fallin/workitem_id">workitem id</b>
+</p>
+
+<p>
+<table cellspacing="0" cellpadding="0" border="0">
+<tr>
+  <th bgcolor="#dfdfdf">
+    Process
+  </th>
+  <th bgcolor="#dfdfdf">
+    Activity
+  </th>
+</tr>
+
+<tr>
+<div tal:repeat="process python:container.objectValues('Process')">
+  <form action="fallinWorkitem" method="post">
+    <input type="hidden" name="coming_from" value="coming from" tal:attributes="value here/REQUEST/HTTP_REFERER">
+    <input type="hidden" name="process_id" value="coming from" tal:attributes="value process/id">
+    <input type="hidden" name="instance_id" value="coming from" tal:attributes="value fallin/instance_id">
+    <input type="hidden" name="workitem_id" value="coming from" tal:attributes="value fallin/workitem_id">
+
+    <tr>
+      <td>
+        <b tal:replace="process/id">Id</b>
+      </td>
+      <td>
+        <select name="activity_id">
+          <tal:block repeat="activity python:process.objectValues('Activity')">
+            <option value="" tal:attributes="value activity/id" tal:content="activity/id">Id
+            </option>
+          </tal:block>
+        </select>
+      </td>
+      <td>
+        <input type="submit" value="Fallin">
+      </td>
+     </tr>
+  </form>
+</div>
+
+</table>
+
+</tal:block>
+<tal:block condition="here/REQUEST/form/instance_id | here/REQUEST/form/workitem_id">
+  You must specify both an instance id and one of its workitem ids
+</tal:block>
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>

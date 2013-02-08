@@ -1,0 +1,9 @@
+Thanks to:
+
+Robert Boulanger, Phiipp Auersperg, Georg (Gogo) Bernhard, Dirk Stoetzel from BlueDynamics,
+Alan Ranyan, Alexander Limi from Plone,
+Marco di Natale from Scuola Superiore Sant`Anna,
+Paul Everitt from EuroZope.
+Roberto Raggi Universita`di Pisa,
+Kent Polk Southwest Foundation for Biomedical Research
+all at #zope-it :)

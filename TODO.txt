@@ -1,0 +1,21 @@
+CMFOpenflow
+
+todo:
+
+    * Rewrite History.pt with new getUserActions methods
+
+    * In workitem class make coerence with 'kind' and others attributes
+
+    * In todolist separate workitem assigned to the user and unassigned
+
+    * is it correct to have a std application activity with no application assigned?!? 
+       
+       * if no app. name provided in activity form when is std application, it assign '' (two apicets)
+
+    * add OFreports module in cvs (!)
+
+    * Application url should be transformed in an espression (tal or python) that will be evaluated, not a "static url"
+
+    * Differentiate actor and assigned_user (use assigned to a workitem)
+    
+
