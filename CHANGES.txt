@@ -1,0 +1,31 @@
+Permission release:
+
+- added default permissions push and pull to 'Manager'
+
+- AUTOassign is now known as SelfAssign (History.pt)
+
+- Permissions checks in instance and workitem methods
+
+- New methods added:
+
+    * selfAssign: assign an assignable workitem to the current authenticated user
+
+    * getUserActionsOnWorkitem: returns a dictionaty 'Action name', 'action url'
+                                       of the possible actions on a workitem for the user
+    * getUserActionsOnInstance: returns a dictionaty 'Action name', 'action url'
+                                       of the possible actions on a workitem for the user
+
+- Big changes in Interfaces
+
+ * New interface Activity/Permissions: allows to configure Roles per Activity
+ 
+ * Old 'Roles' page cancelled
+
+- Fixed raise exceptions for error handling in CMFOpenflow.py
+  (WorkitemActionsError, InstanceActionsError, PermissionError)
+
+- Added Portal Action: (Personal) Worklist
+
+- Added support for rename, copy&paste for Process
+
+- Added i18n to Plone's skins

@@ -1,0 +1,65 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+
+<table width="100%">
+  <tr>
+    <td align="right">
+      <form action="manage_addApplicationForm" method="post">
+        <input type="submit" name="submit" value="Add Application">
+      </form>
+    </td>
+  </tr>
+</table>
+
+<form action="." method="post">
+    <table width="100%" cellspacing="0" cellpadding="2" border="0">
+        <tr class="list-header">
+            <td class="list-item" width="2%" align="right"></td>
+            <td class="list-item" width="30%" align="left">Application name</td>
+            <td class="list-item" width="68%" align="left">Url</td>
+        </tr>
+
+    <tal:block define="applications  container/listApplications;
+                        start request/start | python:0;
+                        batch python:modules['ZTUtils'].Batch(applications,
+                                                            size=20,
+                                                            start=start);
+                        previous python:batch.previous;
+                        next python:batch.next">
+
+        <tr class="row-normal" tal:repeat="applications batch">
+            <td class="list-item" align="left" valign="top" width="16">
+                <input type="checkbox" name="app_ids:list" value="name"
+                       tal:attributes="value applications/name"/>
+            </td>
+            <td class="list-item" align="left" valign="top" nowrap="1">
+                <a align="left"
+                   tal:content="applications/name"
+                   tal:attributes="href string:manage_editApplicationForm?name=${applications/name}&link=${applications/link}">Application Id</a>
+            </td>
+            <td class="list-item" align="left" valign="top" nowrap="1"
+                tal:content="applications/link">Application URL</td>
+        </tr>
+
+        <tr>
+            <a tal:condition="previous"
+               tal:attributes="href string:${request/URL0}?start:int=${previous/first}"
+               href="previous_url">previous</a>
+            <a tal:condition="next"
+               tal:attributes="href string:${request/URL0}?start:int=${next/first}"
+               href="next_url">next</a>
+        </tr>
+
+    </tal:block>
+
+        <tr>
+            <td></td>
+            <td colspan="1">
+            <input type="submit" name="deleteApplication:method" value="Delete application">
+            </td>
+        </tr>
+  </table>
+</form>
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Header</p>

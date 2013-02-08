@@ -1,0 +1,74 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+<form action="edit" method="post">
+
+<table border="1">
+  <tr>
+    <td colspan="2">
+      Id: <b tal:replace="here/id" tal:omit-tag=""></b>
+      <input type="hidden" name="id" value=""><br>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      Condition:<input type="text" 
+                       name="condition"
+                       value="condition"
+                       size="78"
+                       tal:attributes="value here/condition"><br>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      Description:<textarea name="description" rows="5" cols="60"
+                                    tal:content="here/description">description</textarea><br>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      From:
+      <select name="From">
+        <option value=""
+                tal:content="here/From"
+                tal:attributes="value here/From" selected="">Current From
+        </option>
+        <tal:block repeat="activity python:here.aq_parent.objectValues('Activity')">
+        <option value=""
+                tal:condition="not: python:activity.id == here.From"
+                tal:content="activity/id"
+                tal:attributes="value activity/id">From
+        </option>
+        </tal:block>
+      </select>
+    </td>
+    <td>
+      To:
+      <select name="To">
+        <option value=""
+                tal:content="here/To"
+                tal:attributes="value here/To">Current To
+        </option>
+        <tal:block repeat="activity python:here.aq_parent.objectValues('Activity')">
+        <option value=""
+                tal:condition="not: python:activity.id == here.To"
+                tal:content="activity/id"
+                tal:attributes="value activity/id">To
+        </option>
+        </tal:block>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" name="submit" value="Change Transition">
+      <input type="reset" name="reset" value="Reset">
+    </td>
+  </tr>
+</table>
+
+</form>
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>
+

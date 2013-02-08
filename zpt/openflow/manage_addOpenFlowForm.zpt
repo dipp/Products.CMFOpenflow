@@ -1,0 +1,15 @@
+<html>
+  <header>
+    <title></title>
+  </header>
+  <body>
+    <h2>OpenFlow creation</h2>
+    <p>	
+      An Openflow is a container of processes. 
+    </p>
+    <form action="manage_addOpenflow" method="post">
+      <input type="text" name="id" value="mywf"><br> 
+      <input type="submit" name="submit" value="Add OpenFlow">
+    </form>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+<form action="addTransition" method="post">
+
+<table border="1">
+  <tr>
+    <td colspan="2" align="right">
+      Id:<input type="text" name="id" value=""><br> 
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="right">
+      Condition:<input type="text" name="condition" value="" size="78"><br>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="right">
+      Description:<textarea name="description" rows="5" cols="60"></textarea><br>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      From:
+      <select name="From">
+        <tal:block repeat="activity python:here.objectValues('Activity')">
+        <option value=""
+                tal:content="activity/id"
+                tal:attributes="value activity/id">Activity Name</option>
+        </tal:block>
+      </select>
+    </td>
+    <td>
+      To:
+      <select name="To">
+        <tal:block repeat="activity python:here.objectValues('Activity')">
+        <option value=""
+                tal:content="activity/id"
+                tal:attributes="value activity/id">Activity Name</option>
+        </tal:block>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" name="submit" value="Add Transition">
+    </td>
+  </tr>
+</table>
+
+</form>
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>
+

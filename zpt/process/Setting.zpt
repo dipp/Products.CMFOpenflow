@@ -1,0 +1,146 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+
+<form action="edit" method="post">
+<table border="0">
+  <tr>
+    <th>
+      Id
+    </th>
+    <td tal:content="here/id">
+      Process Name
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Begin activity
+    </th>
+    <td>
+        <select name="begin">
+            <tal:block repeat="activity python:here.objectValues('Activity')">
+                <option value=""
+                        tal:content="activity/id"
+                        tal:attributes="value activity/id"
+                        tal:condition="not:python:activity.id==here.begin">Begin Activity Name</option>
+                <option value=""
+                        selected=""
+                        tal:content="activity/id"
+                        tal:attributes="value activity/id"
+                        tal:condition="python:activity.id==here.begin">Selected Begin Activity Name</option>
+            </tal:block>
+        </select>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      End activity
+    </th>
+    <td>
+        <select name="end">
+            <tal:block repeat="activity python:here.objectValues('Activity')">
+                <option value=""
+                        tal:content="activity/id"
+                        tal:attributes="value activity/id"
+                        tal:condition="not:python:activity.id==here.end">End Activity Name</option>
+                <option value=""
+                        selected=""
+                        tal:content="activity/id"
+                        tal:attributes="value activity/id"
+                        tal:condition="python:activity.id==here.end">Selected End Activity Name</option>
+            </tal:block>
+        </select>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Title
+    </th>
+    <td>
+      <input type="text"
+             name="title:text"
+             value="Process Title"
+             tal:attributes="value here/title">
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Description
+    </th>
+    <td>
+      <textarea name="description:text"
+                cols="20"
+                rows="5"
+                tal:content="here/description">
+         A process modelling a issues tracking system
+      </textarea>
+    </td>
+  </tr>
+
+
+  <tr>
+    <th>
+      Priority
+    </th>
+    <td>
+      <input type="text" name="priority:int" size="3" value="priority" tal:attributes="value here/priority">
+      (0 = lowest priority)
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Limit
+    </th>
+    <td>
+      <input type="text" name="limit:int"  value="limit" tal:attributes="value here/limit">
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Validity
+    </th>
+    <td align="right">
+      From: <input type="text" name="valid_from:date" value="" tal:attributes="value here/valid_from"><br>
+      To: <input type="text" name="valid_to:date" value="" tal:attributes="value here/valid_to">
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Waiting time
+    </th>
+    <td>
+      <input type="text" name="waiting_time:int" value="" tal:attributes="value here/waiting_time">
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Duration
+    </th>
+    <td>
+      <input type="text" name="duration:int" size="4" value="0">
+      <select name="duration_unit">
+        <tal:block repeat="unit python:['minutes','hours','days','weeks','months','years']">
+            <option value=""
+                    tal:content="unit"
+                    tal:attributes="value unit"
+                    tal:condition="not:python:unit==here.duration_unit">unit</option>
+            <option value=""
+                    selected=""
+                    tal:content="unit"
+                    tal:attributes="value unit"
+                    tal:condition="python:unit==here.duration_unit">selected unit</option>
+        </tal:block>
+     </select>
+    </td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2">
+      <input type="submit" value="change">
+    </td>
+  </tr>
+</table>
+
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>

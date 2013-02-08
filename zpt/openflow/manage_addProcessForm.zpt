@@ -1,0 +1,107 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+
+<form action="addProcess" method="post">
+Create a new process:
+<table border="0">
+  <tr>
+    <th>
+      Id
+    </th>
+    <td>
+      <input type="text"
+             name="id:text"
+             value="mypr"
+             size="30">
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Title
+    </th>
+    <td>
+      <input type="text"
+             name="title:text"
+             value=""
+             size="30">
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Description
+    </th>
+    <td>
+      <textarea name="description:text"
+                cols="20"
+                rows="5">
+      </textarea>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <input type="checkbox" name="BeginEnd:bool" CHECKED>Create standard Begin and End activities
+    </td>
+  </tr>
+
+  <tr>
+    <th>
+      Priority
+    </th>
+    <td>
+      <input type="text" name="priority:int" size="3" value="0">
+      (0 = lowest priority)
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Limit
+    </th>
+    <td>
+      <input type="text" name="limit:int"  value="0" size="10">
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Validity
+    </th>
+    <td align="right">
+      From: <input type="text" name="valid_from:date" value="1-1-2002" size="10"><br>
+      To: <input type="text" name="valid_to:date" value="1-1-2002" size="10">
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Waiting time
+    </th>
+    <td>
+      <input type="text" name="waiting_time:int" value="0" size="10">
+    </td>
+  </tr>
+  <tr>
+    <th>
+      Duration
+    </th>
+    <td>
+      <input type="text" name="duration:int" size="4" value="0">
+      <select name="duration_unit">
+        <option value="minutes">minutes</option>
+	    <option value="hours">hours</option>
+	    <option value="days">days</option>
+	    <option value="weeks">weeks</option>
+	    <option value="months">months</option>
+	    <option value="years">years</option>
+	 </select>
+    </td>
+  </tr>
+
+
+  <tr>
+    <td colspan="2">
+      <input type="submit" value="Add">
+    </td>
+  </tr>
+</table>
+
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>

@@ -1,0 +1,43 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+<h2><b tal:replace="here/id">id</b>: details</h2>
+
+<p>
+  Transition details are presented in the following table.
+  The condition is used when the tokens move from activity to activity (condition must be evaluated to true).
+  Activity details can be viewed selectiong the activity.
+</p>
+
+<table border="2">
+  <tr>
+    <th bgcolor="#dfdfdf">
+      Condition
+    </th>
+    <td>
+      <span tal:replace="here/Condition"></span>&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <th bgcolor="#dfdfdf">
+      From
+    </th>
+    <td>
+      <a href="" tal:attributes="href here/From"
+                 tal:content="here/From">from
+      </a>&nbsp;
+    </td>
+  </tr>
+  <tr>
+    <th bgcolor="#dfdfdf">
+      To
+    </th>
+    <td>
+      <a href="" tal:attributes="href here/To"
+                 tal:content="here/To">to
+      </a>&nbsp;
+    </td>
+  </tr>
+</table>
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>

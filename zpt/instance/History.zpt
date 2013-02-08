@@ -1,0 +1,244 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+<tal:block define="global UserName python:user.getUserName()" />
+
+Each instance represents a process instance.
+Flowing through a workflow the instance will be eventually split, joined and routed through the process activities.
+
+<hr>
+<h2>Situation</h2>
+
+<p tal:define="global instance_id container/id;global  instance_obj python:getattr(container,instance_id)">
+  The instance is <em tal:content="instance_obj/status">status</em>.
+
+  <tal:block condition="python:instance_obj.status=='initiated'">
+    <a href="" tal:attributes="href string:../startInstance?instance_id=${instance_id}">Activate</a> it.
+  </tal:block>
+
+  <tal:block condition="python:instance_obj.status in ('active', 'initiated', 'running')">
+    <a href="" tal:attributes="href string:../suspendInstance?instance_id=${instance_id}">Suspend</a> it.
+  </tal:block>
+
+  <tal:block condition="python:instance_obj.status=='suspended'">
+    <a href="" tal:attributes="href string:../resumeInstance?instance_id=${instance_id}">Resume</a> it.
+  </tal:block>
+
+  <tal:block condition="python:instance_obj.status not in ('complete', 'terminated')">
+    <a href="" tal:attributes="href string:../terminateInstance?instance_id=${instance_id}">Terminate</a> it.
+  </tal:block>
+
+</p>
+
+
+<tal:block
+        repeat="status python:['inactive','active','complete','suspended','fallout']"
+        condition="python:instance_obj.status=='active' or instance_obj.status=='running'">
+
+<h3><tal:block content="python:modules['string'].capitalize(status)">Status</tal:block> Workitems</h3>
+
+    <p tal:define="global live python:container.Catalog.searchResults(meta_type='Workitem',instance_id=instance_id,status=status)"
+       tal:condition="not:live">
+        There are no <tal:block content="status">status</tal:block> workitems.
+    </p>
+
+    <table border="0" cellspacing="0" cellpadding="0" width="100%"
+           tal:condition="live">
+
+      <tr bgcolor="#CCCCCC">
+        <th align="left">Workitem</th>
+        <th>Activity</th>
+        <th>Process</th>
+        <th>Action</th>
+      </tr>
+
+      <tal:block
+            condition="python:status=='inactive'"
+            repeat="workitem python:container.Catalog.searchResults(meta_type='Workitem',instance_id=instance_id,status='inactive',sort_on='id')">
+      <tr bgcolor="#FFFFFF"
+          tal:define="workitem_obj python:workitem.getObject()">
+        <td align="left" tal:content="workitem_obj/id">Workitem id (inactive)</td>
+        <td align="center" tal:content="workitem_obj/activity_id">Activity id</td>
+        <td align="center" tal:content="workitem_obj/process_id">Process id</td>
+
+        <td align="center">
+            <tal:block condition="not:workitem_obj/blocked">
+            <a href=""
+               tal:attributes="href string:../selfAssignWorkitem?instance_id=${instance_id}&workitem_id=${workitem_obj/id}">
+                Self assign
+            </a>
+            |
+            <a href=""
+               tal:attributes="href string:../unassignWorkitem?instance_id=${instance_id}&workitem_id=${workitem_obj/id}">
+                unassign
+            </a>
+            |
+            <a href=""
+               tal:attributes="href string:../activateWorkitem?instance_id=${instance_id}&workitem_id=${workitem_obj/id}&actor=${UserName}">
+                activate
+            </a>
+            |
+            <a href=""
+               tal:attributes="href string:../suspendWorkitem?instance_id=${instance_id}&workitem_id=${workitem_obj/id}">
+            suspend</a>
+            |
+            <a href=""
+               tal:attributes="href string:../falloutWorkitem?instance_id=${instance_id}&workitem_id=${workitem_obj/id}">
+            fallout</a>
+            </tal:block>
+            <tal:block condition="workitem_obj/blocked">
+                Blocked - waiting <b tal:content="workitem_obj/blocked">1</b> arrival/s
+            </tal:block>
+        </td>
+      </tr>
+      </tal:block>
+
+      <tal:block
+            condition="python:status=='active'"
+            repeat="workitem python:container.Catalog.searchResults(meta_type='Workitem',instance_id=instance_id,status='active',sort_on='id')">
+      <tr bgcolor="#EEEEEE"
+          tal:define="workitem_obj python:workitem.getObject()">
+        <td align="left" tal:content="workitem_obj/id">Workitem id (active)</td>
+        <td align="center" tal:content="workitem_obj/activity_id">Activity id</td>
+        <td align="center" tal:content="workitem_obj/process_id">Process id</td>
+        <td align="center">
+            <a href=""
+               tal:define="UserName python:user.getUserName()"
+               tal:attributes="href string:../completeWorkitem?instance_id=${instance_id}&workitem_id=${workitem_obj/id}">
+            complete</a>
+            |
+            <a href=""
+               tal:attributes="href string:../inactivateWorkitem?instance_id=${instance_id}&workitem_id=${workitem_obj/id}">
+            inactivate</a>
+            |
+            <a href=""
+               tal:attributes="href string:../falloutWorkitem?instance_id=${instance_id}&workitem_id=${workitem_obj/id}">
+            fallout</a>
+        </td>
+      </tr>
+      </tal:block>
+
+      <tal:block
+            condition="python:status=='complete'"
+            repeat="workitem python:container.Catalog.searchResults(meta_type='Workitem',instance_id=instance_id,status='complete',sort_on='id')">
+      <tr bgcolor="#FFFFFF"
+          tal:define="workitem_obj python:workitem.getObject()">
+        <td align="left" tal:content="workitem_obj/id">Workitem id (complete)</td>
+        <td align="center" tal:content="workitem_obj/activity_id">Activity id</td>
+        <td align="center" tal:content="workitem_obj/process_id">Process id</td>
+        <td align="center">
+            <a href=""
+               tal:attributes="href string:../forwardWorkitem?instance_id=${instance_id}&workitem_id=${workitem_obj/id}"
+               tal:condition="not:python:workitem_obj.activity_id=='End' or workitem_obj.forwarded">
+            forward</a>
+        </td>
+      </tr>
+      </tal:block>
+
+      <tal:block
+            condition="python:status=='fallout'"
+            repeat="workitem python:container.Catalog.searchResults(meta_type='Workitem',instance_id=instance_id,status='fallout',sort_on='id')">
+        <tr bgcolor="#FFFFFF">
+            <td align="left"
+                tal:define="global workitem_obj python:workitem.getObject()"
+                tal:content="workitem_obj/id">Workitem id (fallout)</td>
+            <td align="center"
+                tal:content="workitem_obj/activity_id">Activity id</td>
+            <td align="center"
+                tal:content="workitem_obj/process_id">Process id</td>
+            <td align="center">
+                <a href=""
+                   tal:attributes="href string:../manage_chooseFallin?instance_id=${workitem_obj/instance_id}&workitem_id=${workitem_obj/id}">
+                fallin</a>
+                |
+                <a href=""
+                   tal:attributes="href string:../endFallinWorkitem?instance_id=${workitem_obj/instance_id}&workitem_id=${workitem_obj/id}">
+                end fallout</a>
+            </td>
+        </tr>
+        </tal:block>
+
+      <tal:block
+            condition="python:status=='suspended'"
+            repeat="workitem python:container.Catalog.searchResults(meta_type='Workitem',instance_id=instance_id,status='suspended',sort_on='id')">
+        <tr bgcolor="#FFFFFF">
+            <td align="left"
+                tal:define="global workitem_obj python:workitem.getObject()"
+                tal:content="workitem_obj/id">Workitem id (suspended)</td>
+            <td align="center"
+                tal:content="workitem_obj/activity_id">Activity id</td>
+            <td align="center"
+                tal:content="workitem_obj/process_id">Process id</td>
+            <td align="center">
+                <a href=""
+                   tal:attributes="href string:../resumeWorkitem?instance_id=${workitem_obj/instance_id}&workitem_id=${workitem_obj/id}">
+                resume</a>
+            </td>
+        </tr>
+        </tal:block>
+
+    </table>
+
+</tal:block>
+
+<hr>
+
+<tal:block define="workitems python:container.Catalog.searchResults(meta_type='Workitem',instance_id=instance_id,sort_on='id')"
+           condition="workitems">
+
+<h2>Instance history</h2>
+
+    <tal:block repeat="workitem workitems">
+    <table cellspacing="0" cellpadding="0" border="1" width="600"
+           tal:define="workitem_obj python:workitem.getObject()">
+        <tr>
+            <th width="100" bgcolor="#CCCCCC">Id</th>
+            <td width="400" tal:content="workitem_obj/id">Workitem id</td>
+        </tr>
+        <tr>
+            <th bgcolor="#CCCCCC">Activity</th>
+            <td><tal:block content="workitem_obj/activity_id">Activity id</tal:block>
+                (in process <em tal:content="workitem_obj/process_id">Process id</em>)</td>
+        </tr>
+        <tr>
+            <th bgcolor="#CCCCCC">Actor</th>
+            <td tal:content="workitem_obj/actor">Actor Name</td>
+        </tr>
+        <tr>
+            <th bgcolor="#CCCCCC">From</th>
+            <td tal:content="workitem_obj/workitems_from">[from]</td>
+        </tr>
+        <tr>
+            <th bgcolor="#CCCCCC">Status</th>
+            <td tal:content="workitem_obj/status">Workitem Status</td>
+        </tr>
+        <tr>
+            <th bgcolor="#CCCCCC">To</th>
+            <td tal:content="workitem_obj/workitems_to">[to]</td>
+        </tr>
+        <tr>
+            <th bgcolor="#CCCCCC">Events</th>
+            <td>
+                <ul>
+                    <tal:block repeat="event workitem_obj/event_log">
+                        <li>
+                            <tal:block content="event/event">creation</tal:block>
+                            (<tal:block content="event/time">2002/08/02 10:53:04.250 GMT+2</tal:block>)
+                        </li>
+                    </tal:block>
+                    <tal:block replace="nothing">
+                        <li>assigned to Openflow engine (2002/08/02 10:53:04.251 GMT+2)</li>
+                        <li>active (2002/08/02 10:53:04.251 GMT+2)</li>
+                        <li>complete (2002/08/02 10:53:04.252 GMT+2)</li>
+                        <li>forwarded to act1 (2002/08/02 10:53:04.253 GMT+2)</li>
+                    </tal:block>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    <br>
+    </tal:block>
+
+</tal:block>
+
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>

@@ -1,0 +1,236 @@
+<p tal:replace="structure here/manage_page_header" omit-tag="">Header</p>
+<p tal:replace="structure here/manage_tabs" omit-tag="">tabs</p>
+
+<form action="edit" method="post">
+
+<table border="0">
+  <tr>
+        <th>
+          Activity id
+        </th>
+        <td align="right">
+          <p tal:content="here/id">Activity id</p>
+        </td>
+  </tr>
+
+<tr>
+  <th>
+    General settings
+  </th>
+  <td align="right">
+    Title:       <input type="text"
+                        name="title"
+                        value="activity title"
+                        tal:attributes="value here/title"><br>
+
+    Description: <input type="text"
+                        name="description"
+                        value="activity description"
+                        tal:attributes="value here/description"><br>
+
+    Limit:       <input type="text"
+                        name="limit"
+                        value="activity limit"
+                        tal:attributes="value here/limit"><br>
+  </td>
+</tr>
+</table>
+
+<table border="1">
+<tr>
+  <th>
+    Activity Kind:
+  </th>
+  <td align="right">
+  </td>
+</tr>
+
+<tr>
+  <th>
+    <tal:block condition="python:here.kind=='dummy'">
+      <input type="radio" name="kind:string" value="dummy" checked>
+    </tal:block>
+    <tal:block condition="python:here.kind!='dummy'">
+      <input type="radio" name="kind:string" value="dummy">
+    </tal:block>
+    Dummy
+  </th>
+  <td align="right">Routing activity
+  </td>
+</tr>
+
+<tr>
+
+  <th>
+    <tal:block condition="python:here.kind=='standard'">
+      <input type="radio" name="kind:string" value="standard" checked>
+    </tal:block>
+    <tal:block condition="python:here.kind!='standard'">
+      <input type="radio" name="kind:string" value="standard">
+    </tal:block>
+    Application
+  </th>
+  <td align="right">
+  Name:
+    <select name="application">
+        <tal:block  define="applications python:container.listApplications()"
+                    repeat="application applications">
+         <option value=""
+                tal:content="here/application"
+                tal:attributes="value here/application"
+                tal:condition="python:application['name']==here.application"
+                selected="">
+              Application Name Selected
+          </option>
+          <option value=""
+                    tal:content="application/name"
+                    tal:attributes="value application/name"
+                    tal:condition="not:python:application['name']==here.application">
+              Application Name
+          </option>
+        </tal:block>
+        <option value=""
+                selected=""
+                tal:condition="python:here.application==None">None</option>
+        <option value=""
+                tal:condition="not:python:here.application==None">None</option>
+    </select>
+  <p>
+   <table>
+      <tr>
+        <td>
+          <tal:block condition="here/auto_push_mode">
+            <input type="checkbox" name="auto_push_mode:int" value="1" checked>
+          </tal:block>
+          <tal:block condition="not:here/auto_push_mode">
+            <input type="checkbox" name="auto_push_mode:int" value="1">
+          </tal:block>
+
+          Automatic push pushing application:
+            <select name="push_application">
+                <tal:block  define="applications python:container.listApplications()"
+                            repeat="application applications">
+                <option value=""
+                        tal:content="here/push_application"
+                        tal:attributes="value here/push_application"
+                        tal:condition="python:application['name']==here.push_application"
+                        selected="">
+                    Push Application Name Selected
+                </option>
+                <option value=""
+                            tal:content="application/name"
+                            tal:attributes="value application/name"
+                            tal:condition="not:python:application['name']==here.push_application">
+                    Push Application Name
+                </option>
+                </tal:block>
+                <option value=""
+                        tal:condition="python:here.push_application==None"
+                        selected="">None</option>
+                <option value=""
+                        tal:condition="not:python:here.push_application==None">None</option>
+            </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <tal:block condition="python:here.start_mode">
+            <input type="checkbox" name="start_mode:int" value="1" checked>
+          </tal:block>
+          <tal:block condition="not:python:here.start_mode">
+            <input type="checkbox" name="start_mode:int" value="1">
+          </tal:block>
+          Automatic start
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <tal:block condition="python:here.finish_mode">
+            <input type="checkbox" name="finish_mode:int" value="1" checked>
+          </tal:block>
+          <tal:block condition="not:python:here.finish_mode">
+            <input type="checkbox" name="finish_mode:int" value="1">
+          </tal:block>
+          Automatic finish
+        </td>
+      </tr>
+    </table>
+  </td>
+
+</tr>
+
+<tr>
+
+  <th>
+    <tal:block condition="python:here.kind=='subflow'">
+      <input type="radio" name="kind:string" value="subflow" checked="">
+    </tal:block>
+    <tal:block condition="python:here.kind!='subflow'">
+      <input type="radio" name="kind:string" value="subflow">
+    </tal:block>
+    Subprocess
+  </th>
+  <td align="right">
+    Subflow:
+    <select name="subflow">
+        <tal:block repeat="process python:here.aq_parent.aq_parent.objectValues('Process')">
+        <option value=""
+                selected=""
+                tal:content="process/id"
+                tal:attributes="value process/id"
+                tal:condition="python:process.id==here.subflow">Process Name</option>
+        <option value=""
+                tal:content="process/id"
+                tal:attributes="value process/id"
+                tal:condition="not:python:process.id==here.subflow">Process Name</option>
+        </tal:block>
+        <option value=""
+                tal:condition="python:here.subflow==None"
+                selected="">None</option>
+        <option value=""
+                tal:condition="not:python:here.subflow==None">None</option>
+    </select>
+  </td>
+</tr>
+</table>
+
+<table>
+<tr>
+
+  <th>Workitem handling</th>
+  <td align="right">
+  Join kind:
+  <select name="join_mode">
+    <option value="join mode"
+            tal:content="here/join_mode"
+            tal:attributes="value here/join_mode">join mode
+    </option>
+    <option value="and" tal:condition="not:python:here.join_mode=='and'">and</option>
+    <option value="xor" tal:condition="not:python:here.join_mode=='xor'">xor</option>
+  </select><br>
+  Split kind:
+  <select name="split_mode">
+    <option value="split mode"
+            tal:content="here/split_mode"
+            tal:attributes="value here/split_mode">split mode
+    </option>
+    <option value="and" tal:condition="not:python:here.split_mode=='and'">and</option>
+    <option value="xor" tal:condition="not:python:here.split_mode=='xor'">xor</option>
+  </select><br>
+  </td>
+
+</tr>
+</table>
+
+<table>
+  <tr>
+    <td colspan="2" align="center">
+      <input type="submit" name="submit" value="Change">
+    </td>
+  </tr>
+</table>
+
+</form>
+<p tal:replace="here/subflow"></p>
+<p tal:replace="structure here/manage_page_footer" omit-tag="">Footer</p>
+
