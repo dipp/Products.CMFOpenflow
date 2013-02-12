@@ -21,7 +21,6 @@ def initialize(context):
     utils.initializeBasesPhase2(z_tool_bases, context)
     utils.ToolInit( 'CMF OpenFlow Tool',
                     tools = tools,
-                    product_name = 'CMFOpenFlow',
                     icon='images/Openflow.png'
                     ).initialize( context )
     context.registerClass(CMFOpenflowTool,
