@@ -12,7 +12,7 @@ long_description = (
 
 setup(name='Products.CMFOpenflow',
       version=__version__,
-      description="Workflowengine",
+      description="Activity based Workflow",
       long_description=long_description,
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
@@ -23,7 +23,7 @@ setup(name='Products.CMFOpenflow',
       keywords='',
       author='Peter Reimer',
       author_email='reimer@hbz-nrw.de',
-      url='http://svn.plone.org/svn/plone/plone.example',
+      url='https://github.com/peterreimer/Products.CMFOpenflow',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['Products'],
