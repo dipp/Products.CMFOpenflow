@@ -1,11 +1,4 @@
-"""
- id: install
- title: Install CMFOpenflow *optional*
- module name: CMFOpenflow.Install
- function name: install
-"""
-
-from Products.CMFCore.TypesTool import ContentFactoryMetadata
+from Products.CMFCore.TypesTool import FactoryTypeInformation 
 from Products.CMFCore.utils import getToolByName
 from Products.CMFOpenflow import CMFOpenflowTool, cmfopenflow_globals
 from Products.CMFCore.DirectoryView import addDirectoryViews

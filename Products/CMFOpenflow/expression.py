@@ -4,9 +4,9 @@ import Globals
 from Globals import Persistent
 from Acquisition import aq_inner, aq_parent
 from AccessControl import getSecurityManager, ClassSecurityInfo
-from Products.PageTemplates.Expressions import getEngine, _SecureModuleImporter
+from Products.PageTemplates.Expressions import getEngine, SecureModuleImporter
 
-SecureModuleImporter = _SecureModuleImporter()
+#SecureModuleImporter = SecureModuleImporter()
 
 class Expression (Persistent):
     method_name = ''

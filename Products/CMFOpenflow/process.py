@@ -90,7 +90,7 @@ class process(CatalogPathAware, Folder):
     manage_addTransitionForm = PageTemplateFile('zpt/process/manage_addTransitionForm', globals())
 
 
-    security.declareProtected('Manage OpenFlow', 'Map')
+    security.declareProtected('Manage OpenFlow', 'index_html')
     index_html = PageTemplateFile('zpt/process/Map', globals())
 
 

@@ -64,7 +64,7 @@ class activity(CatalogPathAware, SimpleItem):
     meta_type = 'Activity'
 
 
-    security.declareProtected('Manage OpenFlow', 'editActivity')
+    security.declareProtected('Manage OpenFlow', 'edit')
     def edit(self,
              split_mode=None,
              join_mode=None,

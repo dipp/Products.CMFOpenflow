@@ -32,7 +32,7 @@ class transition(CatalogPathAware, SimpleItem):
     meta_type = 'Transition'
 
 
-    security.declareProtected('Manage OpenFlow', 'editTransition')
+    security.declareProtected('Manage OpenFlow', 'edit')
     def edit(self, condition, From, To, description, REQUEST=None):
         """  """
         self.condition = condition
