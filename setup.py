@@ -1,20 +1,12 @@
 import os
 from setuptools import setup, find_packages
 
-def read(*rnames):
-    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
-
-__version__ = read('Products','CMFOpenflow','version.txt').strip()
-
-long_description = (
-    read('README.txt')
-)
+version = '2.0a1'
 
 setup(name='Products.CMFOpenflow',
-      version=__version__,
+      version=version,
       description="Activity based Workflow",
-      long_description=long_description,
-      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+      long_description=open("README.txt").read(),
       classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
