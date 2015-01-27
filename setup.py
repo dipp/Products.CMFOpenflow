@@ -6,7 +6,7 @@ version = '2.0a1'
 setup(name='Products.CMFOpenflow',
       version=version,
       description="Activity based Workflow",
-      long_description=open("README.txt").read(),
+      long_description=open("README.rst").read(),
       classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
