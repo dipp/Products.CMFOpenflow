@@ -1,10 +1,10 @@
 import os
 from setuptools import setup, find_packages
 
-version = '2.0a2'
+__version__ = read('Products', 'CMFOpenflow', 'version.txt').strip()
 
 setup(name='Products.CMFOpenflow',
-      version=version,
+      version=__version__,
       description="Activity based Workflow",
       long_description=open("README.rst").read(),
       classifiers=[
