@@ -1,6 +1,10 @@
 import os
 from setuptools import setup, find_packages
 
+def read(*rnames):
+    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+
+
 __version__ = read('Products', 'CMFOpenflow', 'version.txt').strip()
 
 setup(name='Products.CMFOpenflow',
